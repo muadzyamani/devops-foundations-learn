@@ -380,3 +380,116 @@ How could you contribute to the wall of confusion?
 - making frequent revisions to the code
 
 ---
+
+# 3. DevOps and Process: The Building Blocks
+
+## DevOps process building block: Agile
+
+- The DevOps movement has its roots in the Agile community. It began when Patrick Debois and Andrew Clay Schaeffer discussed "Agile Infrastructure" at the Agile 2008 conference.
+- **Waterfall Model:** The traditional Software Development Lifecycle (SDLC) approach.
+  - **Process:** Requirements -> Design -> Implementation -> Testing -> Deployment -> Maintenance.
+  - Each phase is completed fully before the next one begins, with work "thrown over the wall" to the next team.
+  - **Problems:** Slow feedback loops, loss of context at each handoff, leads to finger-pointing and rigid processes.
+- **Agile Model:**
+  - Performs the same SDLC steps but in **small, rapid iterations**.
+  - Instead of one large delivery, it produces frequent, interim deliverables of working software.
+  - Emphasizes active collaboration between all teams, including end-users.
+  - **Benefits:**
+    - 85% see increased productivity.
+    - 80% report faster time to market.
+    - 81% have better delivery time predictability.
+    - 79% see enhanced software quality.
+- **Agile's Shortcoming:** The original Agile Manifesto focused on developers delivering "working software" but did not include **operations** or the systems/infrastructure part of the equation.
+- **DevOps and Agile:**
+  - DevOps is not the same as Agile, but it can and should be implemented as an **extension of Agile**.
+  - DevOps brings the operations and systems work into the iterative, collaborative Agile framework.
+
+## DevOps process building block: Lean
+
+- Lean is a systematic process for **eliminating waste**, originally from the Toyota Production System (TPS).
+- It was adapted for tech in books like Eric Ries' "Lean Startup" (Build, Measure, Learn loop) and Mary and Tom Poppendieck's "Lean Software Development."
+- **Fundamental Philosophy:** Distinguish between activities that add value and those that don't (waste).
+- **Three Major Types of Waste (from Japanese):**
+  - **Muda:** Unnecessary effort or activities that don't add value.
+  - **Muri:** Waste from overburdening people or systems.
+  - **Mura:** Waste from unevenness or irregularity in flow (e.g., delays).
+- **Seven Wastes in Software Development (Poppendiecks):** Includes things like bugs, delays, and building features that aren't needed. An eighth waste, "management activities," was added as an example of necessary but non-value-add work (muda type one).
+- **Key Lean Techniques:**
+  - **Kaizen:** Continuous improvement.
+  - **Value Stream Mapping:** Analyzing the entire "concept to cash" pathway to identify waste.
+  - **Visual Management:** Using tools like Kanban boards to make work and its flow visible.
+  - **Work-In-Progress (WIP) Limits:** Restricting the number of active tasks to improve flow and reduce waste.
+- **Lean's Role in DevOps:**
+  - Lean's relevance was quickly recognized, leading Jez Humble to propose adding "L" for Lean to the CAMS acronym, creating **CALMS**.
+  - Lean principles are a formative part of The Three Ways of DevOps.
+  - DORA research has confirmed that Lean management and product development techniques are statistically significant predictors of high performance.
+
+## DevOps process building block: Visible ops change control
+
+- **Premise:** Change is the single biggest cause of IT service outages (around 80%).
+- **Traditional Approach (ITSM/ITIL):**
+  - IT Service Management (ITSM) frameworks like the IT Infrastructure Library (ITIL) were created to manage this chaos.
+  - However, traditional ITIL implementations often create very slow, heavy-handed change management processes.
+  - This typically involves extensive documentation and a central "Change Advisory Board" (CAB) that is slow and disconnected from the technical details of a change.
+- **The Visible Ops Approach:**
+  - Gene Kim's book, "The Visible Ops Handbook," studied high-performing IT organizations and found they used **lightweight, fast, and repeatable change control**.
+  - This approach is a key part of DevOps and is proven by DORA research to improve performance and reduce burnout.
+- **What Lightweight Change Control Looks Like:**
+  1.  **Peer Review:** Most changes are reviewed and approved by another technologist on or close to the team. High-risk changes can be escalated, but the bulk of changes flow smoothly.
+  2.  **Small Batch Sizes:** Keep changes as small as possible. This makes them easier to review, test, and troubleshoot if something goes wrong.
+  3.  **Early, Automated Testing:** Use Continuous Integration (CI) systems to automatically test every change, providing objective validation. Security safeguards can also be built into this early stage.
+- **Conclusion:** Agile, Lean, and lightweight Visible Ops change control are the three core process building blocks that form the foundation of DevOps.
+
+## Chapter Quiz
+
+**Question 1 of 5**
+
+Which software development methodology is discouraged by the DevOps approach?
+
+- **waterfall (Correct)**
+  - _Feedback: The DevOps approach aligns more with Agile than waterfall delivery, focusing on small, frequent delivery of value._
+- ITIL
+- lean
+- scrum
+
+**Question 2 of 5**
+
+DevOps is an extension of **\_** infrastructure in which its process is **\_**.
+
+- Spiral Model; business-focused
+- Waterfall; consuming
+- **Agile; iterative (Correct)**
+  - _Feedback: DevOps has roots in Agile and the process are iterative which generates quick product or solution delivery._
+- Rapid Application Development (RAD); end-user centric
+
+**Question 3 of 5**
+
+Which term in Lean identifies waste that does not add value?
+
+- **muda (Correct)**
+  - _Feedback: The term muda means major waste in Japanese and describes activities that consume effort but do not create customer value in the product._
+- majime
+- mura
+- maiko
+
+**Question 4 of 5**
+
+Let’s say your colleague wants to know more about the central tenet of Lean. How would you explain it to them?
+
+- The purpose of lean is to devalue products according to the amount of “waste” associated with the product.
+- The purpose of lean is to undertake product development in quick, iterative sprint cycles.
+- The objective of lean is to focus on the manufacturer’s needs more than on customers’ satisfaction.
+- **The objective of lean is to ensure that value stream reaches the customer through products and services while eliminating waste. (Correct)**
+
+**Question 5 of 5**
+
+Why are peer reviews the most effective means of review for most changes?
+
+- They reduce the cost of reviewing changes.
+- They aren't; you should always have a manager review any change.
+- They eliminate the risk of making changes.
+  - _Feedback: Nothing removes all risk from changes; the best you can do is reasonably mitigate that risk via review and have other safeguards like testing to further reduce it._
+- **They are performed quickly, in a distributed fashion, by people familiar with the system being changed (Correct)**
+  - _Feedback: Peer reviews are optimal for the vast majority of changes that aren't explicitly risky or cross-technology._
+
+---
