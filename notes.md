@@ -493,3 +493,176 @@ Why are peer reviews the most effective means of review for most changes?
   - _Feedback: Peer reviews are optimal for the vast majority of changes that aren't explicitly risky or cross-technology._
 
 ---
+# 4. Infrastructure as Code
+
+## What is infrastructure as code?
+
+- **Infrastructure:** The underlying hardware and software layer of systems, including servers, storage, networks, and operating systems.
+- **Traditional Approach (Manual):**
+    - Infrastructure was installed and configured manually.
+    - Each system was unique, like a "special snowflake," making administration slow, error-prone, and difficult to reproduce.
+- **Code Approach:**
+    - Code is written, stored in version control, and run through automated build and test systems.
+    - The result is a single, standardized artifact that can be deployed identically across thousands of systems.
+- **Infrastructure as Code (IaC) Definition:** The practice of provisioning and managing your infrastructure through writing automation code instead of performing manual processes.
+    - This is made possible by **programmable infrastructure** (virtualization, cloud APIs, etc.).
+- **Mindset Shift:** The biggest challenge is moving from a mindset of manual actions to a full software development lifecycle approach for infrastructure.
+- **Why IaC is Essential:** The complexity, scale, and ephemeral (temporary) nature of modern systems (cloud, containers, microservices) make manual management impossible.
+- **"Cattle, not pets":** A core DevOps philosophy where servers are treated as a managed herd, not as unique, handcrafted individuals. They can be replaced easily rather than being nursed back to health.
+
+## DevOps applications of infrastructure as code
+
+- **Configuration Management (CM):** The overall process for creating and maintaining systems and software in a desired, consistent state. In DevOps, this is driven by code.
+- **Three Pillars of Automated CM:**
+    1.  **Provisioning:** Making the underlying computing infrastructure (hardware, OS, network) ready for operation.
+    2.  **Deployment:** Automatically installing and upgrading application software on the provisioned systems.
+    3.  **Orchestration:** Performing coordinated operations across multiple systems (e.g., rolling deployments, automated failover).
+- **Key CM Concepts and Terms:**
+    - **Imperative (Procedural):** Defines the specific *commands* to execute to reach a state. (e.g., "Run this command, then copy this file, then start this service").
+    - **Declarative (Functional):** Defines the *desired end state*, and the tool determines the necessary steps to get there. (e.g., "This server should be running Nginx version 1.24").
+    - **Idempotent:** The ability to run the same operation multiple times and always end up in the same state without causing errors. Declarative tools are typically idempotent by nature.
+    - **Self-Service:** The ability for an end-user to initiate an automated process (e.g., provision a new environment) without requiring manual intervention from an operations team.
+    - **Drift:** When the actual configuration of a running system no longer matches the state defined in its code. **Drift detection** is the process of identifying this mismatch.
+
+## Configuration management: From golden image to foil ball
+
+- This section covers the historical evolution of configuration management tools and approaches.
+- **Early Days (pre-DevOps):**
+    - Manual processes and simple cloning tools like Ghost.
+    - Large, complex enterprise suites like Tivoli and HP.
+- **First Wave of IaC (2000s):**
+    - Declarative tools like **CFEngine**, **Puppet**, and **Chef** gained popularity.
+    - These tools promoted a "stem cell" approach: start with a minimal base OS image and use the CM tool to configure the rest.
+    - The tool would then run incrementally to prevent configuration drift.
+- **The "Golden Image or Foil Ball" Debate:**
+    - Puppet founder Luke Kanies argued that using only pre-built "golden images" led to image sprawl and unmanageable configuration drift. The declarative, incremental approach was positioned as the solution.
+- **Limitations of Early CM Tools:**
+    - They used a "pull" model, where each server acted independently. This made **orchestration** of multi-server application deployments very difficult.
+    - They primarily solved problems for system administrators, not the entire development and deployment value stream.
+- **Second Wave of IaC (2010s):**
+    - Tools like **Ansible** and **SaltStack** emerged, using a "push" mechanism for more explicit orchestration.
+    - These tools could define workflows (e.g., update the database, then do a rolling update of the web servers).
+    - Self-service orchestration tools like **Rundeck** also arose to provide a controlled way for users to run these automated workflows.
+
+## Automating infrastructure, containers, and platforms
+
+- This section describes the shift to modern IaC practices.
+- **Rise of Cloud Computing:** Provided APIs to create and manage not just the OS, but the entire infrastructure (servers, networks, storage) with code.
+    - **Model-Driven Provisioning Tools:**
+        - **Cloud-Native:** AWS CloudFormation, Azure ARM Templates (declarative templates).
+        - **Multi-Cloud:** Terraform, Pulumi (use a common DSL).
+        - **Pure Code:** Python's Boto3, AWS CDK (use a general-purpose programming language).
+- **Rise of Containers (Docker):**
+    - Accelerated a shift back towards an image-based model, but with a key difference.
+    - **Immutable Infrastructure:** Instead of configuring a running server, you build a new, complete image (a "golden image" container or VM) and replace the old one entirely. You do not change infrastructure once it is deployed; you replace it.
+- **Container Orchestration Platforms:**
+    - Systems like **Kubernetes** and **Mesos** were developed to solve provisioning, deployment, and orchestration in a single, unified platform.
+    - Users define the desired state in templates, and the platform handles the complex work of making it a reality.
+- **Serverless and Platform-as-a-Service (PaaS):**
+    - These offerings abstract away even more of the infrastructure, allowing teams to focus almost entirely on application code.
+
+## Your DevOps infrastructure as code toolchain
+
+- When building a toolchain, remember to:
+    1.  Pick the right tools for your **team and situation**.
+    2.  **Keep it simple (KISS)**.
+    3.  Design the **toolchain** as a whole, not just pick individual tools.
+- **Key Decisions for Your Toolchain:**
+    1.  **Infrastructure Provisioning:** Will you use a template-driven tool (CloudFormation), a multi-cloud DSL (Terraform), or a pure code library (CDK)?
+    2.  **System Management:** Will you use runtime configuration (Ansible, Puppet) or "bake" immutable images (using a tool like **Hashicorp Packer**)? You can also combine these methods.
+    3.  **Orchestration:** Will this be part of your CM tool (Ansible), a platform feature (Kubernetes), or an external runbook tool (Rundeck)?
+    4.  **Application Deployment:** Will you use CM tools, immutable deployments, or a dedicated CI/CD system?
+    5.  **Testing Strategy:** This is critical. Use the testing frameworks available for your chosen IaC tools to unit and integration test your infrastructure code.
+- **Example Toolchains:**
+    - A **complex SaaS** might use Terraform for infra, Puppet/Packer for baking images, and Rundeck for orchestration.
+    - A **simpler system** might just use CloudFormation for infra and Dockerfiles to build containers deployed to a managed service like AWS ECS or Fargate.
+- The right toolchain depends on the technical and business requirements of the service you are building.
+
+## Chapter Quiz
+
+**Question 1 of 9**
+
+Certain companies utilize immutable deployment, in which changes to the system are _____ as opposed to _____.
+
+- updated; replaced
+- Agile; Waterfall
+- **replaced; updated (Correct)**
+- blue; green
+
+**Question 2 of 9**
+
+Why is orchestration an important part of configuration management?
+
+- **Online services require careful sequencing of changes to maintain uptime while upgrading applications. (Correct)**
+- It's not, if you want orchestration you don't fully understand configuration management.
+- To create repeatable provisioning processes that can be checked into source control.
+    - *Feedback: That's infrastructure as code in general.*
+- It makes releases faster.
+
+**Question 3 of 9**
+
+What is the primary reason to bake images instead of performing runtime configuration?
+
+- To make configuration management simpler
+- To avoid contributing to the heat death of the universe
+- To remove flexibility from runtime
+- **To move time and risk up into the development and build cycle and out of the production deployment cycle (Correct)**
+
+**Question 4 of 9**
+
+Which of the following explains the concept of containers?
+
+- Containers are applications that orchestrate the deployment of virtual systems.
+- Containers are virtualized applications that can be shipped from server to server as needed.
+- Containers are iterative backups that can be rapidly deployed in case of system failure.
+- **Containers are stand-alone software packages that contain runtime components to function independently. (Correct)**
+
+**Question 5 of 9**
+
+Suppose you and your project manager are interested in the infrastructure as code approach. What is the chief issue that your team may face when utilizing the infrastructure as code approach?
+
+- There are no impediments to employing the infrastructure as code in your system.
+- Handling the system as a code instead of deploying systems manually.
+- Custom configurations may overwhelm your version control system.
+- **The mindset and habits of your team members. (Correct)**
+
+**Question 6 of 9**
+
+What is the benefit to a purely code driven infrastructure provisioning tool?
+
+- **It gives you the most flexibility in what you implement (Correct)**
+    - *Feedback: That's right - it's harder and more complex and more costly, but the sky's the limit on what you can do.*
+- It provides higher reliability than template based solutions
+- It requires less sophisticated technical skills to implement
+- It is inherently idempotent
+
+**Question 7 of 9**
+
+You spin up a system from code, but a week later the hosts file has changed. This is an example of what?
+
+- Orchestration
+- Idempotence
+- **Drift (Correct)**
+    - *Feedback: Drift is when your system changes from its intended and defined state.*
+- Sabotage
+
+**Question 8 of 9**
+
+Why is infrastructure as code a better approach than making manual changes?
+
+- **It's more repeatable and testable. (Correct)**
+- Developers are smarter than operations engineers.
+- It can leverage AI more effectively.
+- It's faster to get some initial infrastructure in place.
+
+**Question 9 of 9**
+
+What is it called when you install applications on a system?
+
+- Provisioning
+- Configuration Management
+- Orchestration
+- **Deployment (Correct)**
+    - *Feedback: Deployment is installing and upgrading applications on a system.*
+
+---
