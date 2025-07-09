@@ -666,3 +666,236 @@ What is it called when you install applications on a system?
     - *Feedback: Deployment is installing and upgrading applications on a system.*
 
 ---
+
+# 5. Continuous Delivery
+
+
+## What is continuous delivery?
+
+- **Three Key Stages of Software Delivery:**
+    1.  **Build:** Compile and unit test code, turning it into a software artifact.
+    2.  **Deploy:** Take the artifact, run it in an environment, and perform further testing.
+    3.  **Release:** Make the software available to end users, typically by deploying it to a production environment.
+- **Old Way vs. New Way:**
+    - **Old Way:** Large, complex integration builds and long testing phases happen only at major milestones. This is slow, error-prone, and wasteful.
+    - **New Way (DevOps):** Build, deploy, and release with every small change a developer makes.
+- **Key Definitions:**
+    - **Continuous Integration (CI):** The practice of automatically building and unit testing the entire application on every source code check-in, ensuring the application is **always in a working state**.
+    - **Continuous Delivery (CD):** The practice of deploying every change to a production-like environment and performing automated integration and acceptance tests, ensuring the application is **always release-ready**. (CI/CD refers to the combination).
+    - **Continuous Deployment:** The practice of automatically releasing the application into its production environment after all automated testing has passed.
+- **Why CI/CD Matters (The Benefits):**
+    - **Speed (The First Way):** Optimizes the end-to-end flow, decreases the time it takes to deploy a change, and allows for rapid experimentation. High performers deploy in under an hour, while low performers take 1-6 months.
+    - **Higher Quality:** Despite the speed, CI/CD leads to a *lower* change failure rate. This is because changes are small and tested early and individually, rather than in large, complex batches.
+    - **Fast Feedback Loops (The Second Way):** CI provides immediate feedback on code quality, allowing issues to be found and fixed quickly. This drives up both quality and velocity.
+    - **Reduces Waste (Lean Principle):** Code that is written but not delivered is "Work in Progress" (WIP), which is a form of waste that generates risk.
+    - **Faster Recovery from Failures (MTTR):**
+        1.  It's easier to find the source of a failure because only one small change is deployed at a time.
+        2.  A bug fix is treated like any other change and can be rolled out quickly through the same trusted CI/CD pipeline.
+
+## Six practices for continuous integration
+
+- Think of CI/CD as a pipeline: `Build -> Deploy -> Release`. The build stage, powered by Continuous Integration, is the first step.
+- A CI system automatically triggers a build on every commit, builds the entire codebase, runs all tests, and packages an artifact. A broken build blocks the entire team.
+- **Six Practices for Successful CI:**
+    1.  **Builds should run quickly:** The build should pass the "coffee test" (under 5 minutes). Long builds encourage developers to batch changes, increasing WIP.
+    2.  **Commit small changes:** Small commits are easier for the team to understand and make it easier to isolate the cause of a failure.
+    3.  **Don't leave the build broken:** A broken build blocks delivery for everyone. Fixing it should be the team's highest priority. This is a crucial cultural practice.
+    4.  **Use a trunk-based development flow:** This is a hallmark of high-performing teams. Developers commit small changes directly to the main line ("trunk") multiple times a day, avoiding long-running, complex feature branches. Incomplete features can be hidden behind **feature flags**.
+    5.  **Don't allow flaky automated tests:** Tests that sometimes pass and sometimes fail for no reason erode trust in the CI system and must be fixed.
+    6.  **The build should return a status, a log, and an artifact:**
+        - **Status:** A simple pass/fail (red/green).
+        - **Log:** A detailed record for troubleshooting and compliance.
+        - **Artifact:** The versioned, installable application package that is ready for deployment.
+
+## Five practices for continuous delivery
+
+- After a successful build, a deployment stage deploys the artifact to a production-like environment (e.g., staging, pre-production) for further automated testing.
+- **Five Practices for Successful CD:**
+    1.  **Use one build artifact for all environments:** The artifact is built once and then promoted through the pipeline. You don't rebuild it for staging or production. This ensures that what you tested is what you release.
+    2.  **Make the artifact immutable:** The artifact should not be allowed to change after it's created. This builds trust (everyone is looking at the same bits) and ensures auditability (a clear trace from code to production).
+    3.  **Pre-production environment must be identical to production:** The test environment should be a complete clone of production, including load balancers, network settings, and security controls, to ensure both the code and the deployment process will work correctly.
+    4.  **Stop the pipeline on any failure:** If any stage of the pipeline fails (e.g., deployment to staging), the entire process must stop. This optimizes for the overall flow of quality software, not for individual convenience.
+    5.  **Deployments must be idempotent:** No matter how many times you run the same deployment, you must get the exact same resulting system. This can be achieved with immutable packaging (like Docker) or configuration management tools.
+
+## The role of QA in DevOps
+
+- The "catch" for successful CI/CD is a robust **automated testing strategy**.
+- The role of QA professionals shifts from manual testing to helping design and write automated tests alongside developers.
+- **The Test Pyramid (from fastest to slowest):**
+    1.  **Unit Testing:** Written by developers to validate individual functions. They are fast and run locally.
+    2.  **Code Hygiene:** Using tools like linters and formatters to check code for best practices.
+    3.  **Integration Testing:** Testing components and dependencies working together in a full test environment.
+    4.  **Acceptance/End-to-End Testing:** Testing the entire product from a user's perspective, often at the UI level. This should also be automated (e.g., using Selenium, Cypress).
+- **Key Development Practices for Testing:**
+    - **Test-Driven Development (TDD) / Behavior-Driven Development (BDD):** The practice of writing the test *before* writing the code. This ensures a comprehensive test suite is built as part of the development process.
+- **Handling Slow Tests:**
+    - Slow tests (e.g., browser compatibility, large compliance suites) cannot be ignored.
+    - **Strategies:**
+        1.  Run slow tests in parallel in the pipeline so they don't block the main flow.
+        2.  Use scheduled testing (e.g., a nightly test run).
+        3.  Run them continuously against a test environment.
+    - The goal is to balance the *cost of delay* versus the *cost of bugs*.
+
+## Continuous deployment: The final frontier
+
+- Continuous Deployment (automatically releasing to production) is the final step, but it is **optional**. Some organizations may prefer a manual release step.
+- With good CI/CD and feature flags, continuous deployment can be done safely.
+- **Crucial Rule:** Your production release procedure, however complex, **must be replicated exactly in your test environment**. An untested release process is a major risk.
+- **Common Production Release Patterns:**
+    - **Rolling Deployment:** Upgrading one server at a time in a multi-server environment.
+    - **Blue-Green Deployment:** Creating a complete new "green" environment and then switching traffic over from the old "blue" one.
+    - **Canary Deployment:** Releasing a change to just one or a few servers to monitor its behavior under real load before a full rollout.
+    - **A/B Deployment:** Using feature flags to release new features to a specific subset of users for testing or beta access.
+- Your choice of deployment pattern depends on your software architecture, infrastructure, and packaging choices, and requires collaboration across teams.
+
+## Your DevOps CI toolchain
+
+- To design a toolchain, think in layers like an **onion**, starting from the desired end state (the outside) and working inward.
+- **The Layers of the Toolchain Onion (Outside-In):**
+    1.  **Deployment (Outermost Layer):** How will the software be used? (e.g., A/B, Rolling). This decision drives tooling needs (e.g., feature flagging tools like LaunchDarkly, orchestration in Kubernetes or Ansible).
+    2.  **Artifact Repository:** Where versioned, immutable artifacts are stored (e.g., Artifactory, Nexus, a cloud container registry, or even just S3).
+    3.  **Build and Test:** The collection of tools that validate the code.
+        - **Unit/Integration Testing:** Language-specific frameworks (Pytest, TestNG).
+        - **Acceptance/E2E Testing:** Selenium, Cypress, Postman.
+        - **Specialty Testing:** Infrastructure (InSpec), Performance (JMeter), Security (Dependabot, StackHawk).
+    4.  **Build System:** The engine that runs the pipeline and executes the tests (e.g., Jenkins, GitHub Actions, CircleCI).
+    5.  **Version Control (Center):** The source of truth for all code (e.g., Git, hosted on GitHub, GitLab, or Bitbucket).
+- **Key Metric:** Measure and actively work to improve your **overall cycle time**—the time from a code commit to it running in production.
+
+## Chapter Qui
+
+**Question 1 of 14**
+
+_____ describe when software is deployed quickly into production since the team members make sure the application goes through complete automated testing.
+
+- Blue-green deployments
+- Values
+- Autonomous teams
+- **Continuous deployments (Correct)**
+
+**Question 2 of 14**
+
+Which single metric is most indicative of your CI toolchain's health over time?
+
+- **Overall cycle time (Correct)**
+    - *Feedback: That's right. A fast overall cycle time promotes healthy behavior from developers and gets fast feedback.*
+- Builds completed per day
+- Percentage of failed builds
+- Number of unsuccessful release candidates before one passes all the tests
+
+**Question 3 of 14**
+
+Jenkins is an example of _____.
+
+- **a build system (Correct)**
+- a version control tool
+- a status page generator
+- a security monitoring tool
+
+**Question 4 of 14**
+
+Which task becomes easier when code is maintained in the cloud?
+
+- **having similar preproduction and production environments (Correct)**
+    - *Feedback: Having similar preproduction and production environments is made easier by using containers.*
+- smoke testing a new release
+- identifying automation that can be removed
+- conducting audits on the codebase
+    - *Feedback: This is a content management activity that is usually done on a centralized server.*
+
+**Question 5 of 14**
+
+Artifacts should be _____.
+
+- **built once and deployed as needed (Correct)**
+- ignored in favor of build logs
+- built several times, changed, and deployed in one environment not several
+- sorted by numerically by hash value
+
+**Question 6 of 14**
+
+Suppose some of your tests are slow. Which procedures should you select to handle a slow test?
+
+- Utilize time-scheduled testing.
+- Apply monitoring to complete some test objectives.
+- Employ a non-blocking test.
+- **all of these answers (Correct)**
+
+**Question 7 of 14**
+
+What is the goal for every phase of the continuous delivery process?
+
+- Allow code inspections to be performed regularly.
+- Use a mix of off-the-shelf and custom tools.
+- **Provide early and rapid feedback (Correct)**
+    - *Feedback: By making and validating small changes as soon as they are made, including deploying and using them in a real production environment, you can reduce waste and increase quality.*
+- Allow language-independent build tools to be used on the codebase.
+
+**Question 8 of 14**
+
+Which of the following explains the concept of blue-green deployment?
+
+- The end user (Blue) is able to self-serve, allowing them to initiate a process (Green) without any aid.
+- A process in which both hardware and software are prepared and ready for operation in two live environments.
+- **There are two identical production environments in which one is live (Blue) and the other is idle (Green). When new software is fully tested and deployed to Green, the router switches traffic from Blue to Green (Correct)**
+- A method in which “Blue” maintains the control of the system and “Green” upgrades the application on the server.
+
+**Question 9 of 14**
+
+If you are developing end user test scenarios before writing code, then you are engaged in which type of development?
+
+- integration testing
+- feature-driven development
+- **test-driven development (Correct)**
+    - *Feedback: TDD focuses on building tests before you write the code to make them pass.*
+- Agile development
+
+**Question 10 of 14**
+
+What is a build log?
+
+- It is the building block of software development.
+- **It is a record of all the tests that were run along with their results. (Correct)**
+- It is a quick feedback loop for errors.
+- It is a list of features that are planned for future product builds.
+
+**Question 11 of 14**
+
+Continuous delivery has all of these benefits except _____.
+
+- increasing velocity
+- **increasing fragile artifacts (Correct)**
+    - *Feedback: By having a light and practical approach to change control, you can decrease fragile artifacts.*
+- decreasing unplanned work
+- lowering failure rates
+
+**Question 12 of 14**
+
+Suppose some of your tests are slow. Which procedures should you select to handle a slow test?
+
+- Apply monitoring to complete some test objectives.
+- **all of these answers (Correct)**
+- Employ a non-blocking test.
+- Utilize time-scheduled testing.
+
+**Question 13 of 14**
+
+Which task is part of a trunk-based development flow?
+
+- enforcing commits to occur only once per day
+- keeping active long-running development branches
+- **having all developers commit to the main branch frequently (Correct)**
+    - *Feedback: A trunk-based development flow requires all developers to commit directly to the master branch.*
+- large merges of code with other developers
+
+**Question 14 of 14**
+
+Which belief has been disproven by organizations that utilize continuous delivery?
+
+- **A high frequency of change leads to a decrease in quality. (Correct)**
+    - *Feedback: A high frequency of change can lead to an increase in quality.*
+- The movement from concept to cash is quicker.
+- Small commits need to be rolled up into larger batches.
+- Making changes directly in production is a best practice.
+
+---
