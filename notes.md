@@ -899,3 +899,208 @@ Which belief has been disproven by organizations that utilize continuous deliver
 - Making changes directly in production is a best practice.
 
 ---
+
+# 6. Site Reliability Engineering
+
+
+## What is site reliability engineering?
+
+- **Definition:** Site Reliability Engineering (SRE) is the application of engineering principles to solve real-world problems related to system reliability. It's the "operations" part of DevOps.
+- **Reliability:** The ability of a system to perform its intended function correctly and consistently. This includes availability, performance, security, and other factors.
+- **Holistic Approach:** SRE is not just about "bolting on" reliability after a system is live. It involves a holistic approach that includes:
+    1.  **Building for Reliability:** Engineering systems and applications to be resilient from the very beginning.
+    2.  **Operational Feedback:** Using observability and incident response practices to feed information from production back into the development process to improve the service.
+- **SRE's Impact on Key Metrics:**
+    - **Change Failure Rate:** Reduced through reliability testing and automated deployments.
+    - **Time to Restore Service (MTTR):** Improved through good problem detection and operational automation.
+    - **Availability and Performance:** Maintained through observability and resilience engineering.
+
+## Building for reliability: Theory
+
+- Success in production is heavily influenced by design-time decisions and software architecture.
+- **Key Resources for Designing Reliable Applications:**
+    1.  **"Release It!" by Michael Nygard:** The equivalent of the classic "Gang of Four Design Patterns" book, but focused on application stability.
+        - **Key insight:** Integration points are the #1 cause of issues. **Cascading failures** (e.g., a slow database causing the application server to fail) are a primary threat.
+        - **Stability Pattern Example:** The **Circuit Breaker** pattern stops making calls to a failing integration point to prevent the outage from spreading.
+    2.  **The Twelve-Factor App (12factor.net):** A manifesto for building service-ready software.
+        - **Example (Factor III - Config):** Runtime configuration should be stored in environment variables and kept separate from the application code.
+    3.  **Martin Fowler's Work:** A highly experienced software engineer who writes succinctly about architectural concepts and DevOps-related topics.
+
+## Building for reliability: Practice
+
+- SRE brings hard-won operations experience ("street knowledge") into a disciplined engineering practice.
+- **Key Concepts from "How Complex Systems Fail" by Dr. Richard Cook:**
+    - All complex systems are always running in a partially degraded mode.
+    - Change introduces new and unexpected forms of failure.
+- **Shift from Prevention to Resilience:**
+    - It's impossible to prevent all failures. The goal is **resilience**: the ability of a system to maintain a stable state and continue operations after a disruption.
+- **Tools for Resilience Engineering:**
+    - **Redundancy:** Running multiple identical copies of components.
+    - **Load Balancing:** Directing traffic to healthy parts of the system.
+    - **Automatic Scaling:** Adding more components to accommodate increased load.
+    - **Automated Failover:** Automatically recovering from component failures.
+- **Sociotechnical Systems:** All systems consist of both computers and the people who create, maintain, and use them. Resilience engineering must account for the human element.
+- **SREs as Developers:** SREs should spend at least 50% of their time developing tools and automation, not just fixing things manually.
+- **"You write it, you run it":** Developers are experts on their code and must be involved in resolving production problems. This means being on call and knowing how to use tools like debuggers and profilers in a live environment.
+
+## Operational feedback: Observability
+
+- **Observability:** A measure of how well the internal state of a system can be inferred from its external outputs (metrics, logs, etc.).
+- **Five Key Areas of Observability:**
+    1.  **Synthetic Checks (Health Checks):** Programmatically hitting a service to check its uptime and performance. Answers the basic question: "Is it working?"
+    2.  **System and Application Metrics:** Time-series numerical data (e.g., CPU, memory, custom application metrics) to understand if a service is functioning normally.
+    3.  **End-User Performance:** Using tools to get an accurate look at the user experience.
+        - **Application Performance Monitoring (APM):** Reports performance at the code level (e.g., function call duration, database query time).
+        - **Real User Monitoring (RUM):** Captures performance as observed directly by end-users, often via front-end instrumentation.
+    4.  **System and Application Logs:** Detailed, text-based information that provides context beyond simple metrics. Can be used for troubleshooting, auditing, capacity planning, and more.
+    5.  **Security Monitoring:** Using logs, metrics, and specialized tools to detect threats, indicators of compromise, and suspicious behavior.
+- **Collaboration is Key:** Observability isn't just for operations. The data is valuable for developers to understand how their application is used and to improve the product.
+
+## Operational feedback: Incident response and retrospectives
+
+- **Incident Response:** The practiced activity of responding to and remediating problems in production. It requires three key skills:
+    1.  **Troubleshooting:** In-depth system knowledge to diagnose and fix the problem.
+    2.  **Automation:** Pre-built tooling to speed up information gathering and remediation.
+    3.  **Communication:** Coordinating a team of specialists and keeping stakeholders informed.
+- **Incident Management Process:** Inspired by the Incident Command System (ICS) used by emergency services, this is a defined process for how incidents are detected, reported, and managed.
+- **Postmortems (Incident Retrospectives):** A formalized process to analyze an incident and learn from it.
+    - **No Single "Root Cause":** Outages are caused by multiple deficiencies (in testing, monitoring, process, etc.), not one single mistake.
+    - **Blameless Culture:** The goal is to understand how the system allowed a mistake to become an outage, not to assign blame.
+    - **Transparency:** Open communication during and after an outage builds trust with stakeholders and end-users.
+
+## Your DevOps SRE toolchain
+
+- An SRE toolchain has two parts.
+- **Part 1: Building for Reliability**
+    - This is less about specific tools and more about using libraries (e.g., Java's Resilience4j) and development techniques. Requires collaboration between dev and ops at design time.
+- **Part 2: Operational Feedback (Observability & Incident Response)**
+    - This is a rich space with many tool options (SaaS, open-source, commercial).
+    - **Lean Approach to Tooling (Build, Measure, Learn):**
+        1.  **Build:** Create a minimum viable monitoring stack covering all five areas of observability with the quickest, cheapest options.
+        2.  **Measure:** Start gathering data.
+        3.  **Learn:** Analyze where more detailed information is needed to solve real problems and iterate. This avoids "monitoring waste."
+- **Sharing and Customization:**
+    - Share observability data widely. Developers, product managers, and business stakeholders can all benefit.
+    - Build custom visualizations and dashboards that are meaningful to a non-technical audience.
+- **Incident Response Tools:**
+    - **On-Call & Alerting:** PagerDuty, VictorOps, OpsGenie.
+    - **Runbook Automation:** Rundeck, Ansible Tower, StackStorm.
+    - **Status Pages:** Atlassian Statuspage, Status.io.
+- The key is to keep it simple, keep people in mind, and iterate on a toolchain that enables collaboration.
+
+## Chapter Quiz
+
+**Question 1 of 12**
+
+What is a term for a well designed service?
+
+- **a twelve-factor app (Correct)**
+- a four-pattern app
+- a microservice app
+- a snazaroo
+
+**Question 2 of 12**
+
+What is the implication of us realizing all our IT systems are sociotechnical systems?
+
+- It takes into account end user error in the perception of outages
+- It takes into account larger sociopolitical trends and their influence on computing
+- It means there is always someone to blame for system failures
+- **It takes into account human activity in creating failures and maintaining system health (Correct)**
+
+**Question 3 of 12**
+
+Why do we focus on resilience instead of just plain reliability?
+
+- Because it is less expensive
+- Because it gets us more nines
+- **Because failures are routine in a complex system (Correct)**
+    - *Feedback: All systems fail; resilience is engineering uptime with that truth in mind.*
+- Because avoiding failures is more important than recovering from them
+
+**Question 4 of 12**
+
+You are examining packets to determine whether your database is protected against SQL injections. Which type of monitoring is this?
+
+- performance
+- **security (Correct)**
+    - *Feedback: SQL injection is a tool employed by hackers to defeat a system's security defenses.*
+- application
+- component
+
+**Question 5 of 12**
+
+Let’s say your colleagues are debating whether to employ synthetic or real user monitoring. How is real user monitoring different than synthetic checks?
+
+- Real user monitoring monitors the speed of the application. Synthetic checks make sure the hardware is functional.
+- Synthetic checks analyze security flaws in the application in real time whereas real user monitoring observers the system from the viewpoint of a hacker.
+- Synthetic performance monitoring analyzes software performance in real world scenarios. Real user monitoring observes just the performance of the user, not the system.
+- **Real user monitoring records all the actual end user’s engagement with the web application. Synthetic checks simulate how a user might interact with the application. (Correct)**
+
+**Question 6 of 12**
+
+Why is blame not a useful part of a retrospective?
+
+- **It covers up systemic problems by scapegoating an individual (Correct)**
+- It is! Blame is transparent communication after all
+- It prevents us from improving our observability
+- It makes people feel bad
+
+**Question 7 of 12**
+
+Which key metrics do SRE practices improve?
+
+- engineer burnout; cycle time; business outcomes
+- **change failure rate; time to restore service; meeting reliability goals (Correct)**
+- cycle time; customer satisfaction; lead time
+- mean time between failures; mean time to detect; mean time to restore
+    - *Feedback: Mean times are poor metrics because they are usually not statistically significant.*
+
+**Question 8 of 12**
+
+What are the three key activities of incident response?
+
+- Resilience, redundancy, and reliability
+- Detection, response, and retrospective
+- **Troubleshooting, automation, communication (Correct)**
+- Observability, design, and operations
+
+**Question 9 of 12**
+
+Site reliability engineering (SRE) the discipline of using a software engineering approach to _____ and _____.
+
+- automate operational processes; perform manual tasks
+- **create reliable systems; automate operational processes (Correct)**
+    - *Feedback: SRE includes both operational automation and building in reliability in the first place.*
+- perform continuous delivery; implement infrastructure as code
+- automate operational processes; institute observability
+
+**Question 10 of 12**
+
+Suppose your company is going to purchase a security monitoring tool. How should you select a security monitoring tool?
+
+- **It should integrate well with your other systems and provide APIs so it can be shared across teams and groups. (Correct)**
+- The security monitoring tool should suit your system and is compatible with new deployments.
+- You should always use the newest and latest security monitoring tools since security threats are becoming more sophisticated although it may not work with your system fully.
+- Security monitoring tools are not necessary since hackers are rarely caught although they do leave a trace behind.
+- Regardless of the security monitoring tools out there, they are not solid proof against any security threats so it is better to find the cheapest one.
+
+**Question 11 of 12**
+
+Why should we take a Lean approach for tools, using Build-Measure-Learn?
+
+- Because tools are really hard to use.
+- **Because we don't want to overinvest resources into tools without knowing what we care about. (Correct)**
+    - *Feedback: Yes!*
+- Because tools are best chosen up front and then we build the system.
+- Because there are only a few tool options and we don't want to get the wrong one.
+
+**Question 12 of 12**
+
+Which pattern would you need to build into your application to prevent cascading outages?
+
+- an integration tester
+- **a circuit breaker (Correct)**
+    - *Feedback: A circuit breaker can stop an outage from propagating to other connected systems.*
+- a disaster plan
+- a quality assurance tester
