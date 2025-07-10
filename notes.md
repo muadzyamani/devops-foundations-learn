@@ -1104,3 +1104,5 @@ Which pattern would you need to build into your application to prevent cascading
     - *Feedback: A circuit breaker can stop an outage from propagating to other connected systems.*
 - a disaster plan
 - a quality assurance tester
+
+---
