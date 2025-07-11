@@ -1106,3 +1106,194 @@ Which pattern would you need to build into your application to prevent cascading
 - a quality assurance tester
 
 ---
+
+# 7. Advanced Topics
+
+## Platform engineering: The paved road
+
+- **Concept:** As DevOps scales, you risk chaos from having too many teams creating diverse, custom solutions. Platform engineering is the discipline of creating standardized, self-service automation to guide teams along a "paved road" or "golden path."
+- **Goal:** To solve common problems (like CI/CD, observability, infrastructure) once and provide them as a service to development teams. This reduces waste, decreases delay, and allows improvements to benefit everyone.
+- **The Risk:** Platform engineering can devolve into old-school, bureaucratic, centralized IT if not implemented correctly.
+- **How to Build a Good Platform:**
+    1.  **Manage it Like a Product:** The platform must serve its users (developers), not its creators. Its value should be so high that teams *choose* to use it rather than being forced. Good platforms optimize for the global value stream, not for the central team's convenience.
+    2.  **Take a Lean Approach:** Avoid building too much upfront. "Blaze a trail, then pave the road." Understand what users actually need before investing heavily in platform features.
+
+## DevSecOps: Making your systems more secure the DevOps way
+
+- **Concept:** DevSecOps is the practice of integrating security into the DevOps lifecycle to break down the silos between security, development, and operations teams.
+- **The Problem:** Security is often an understaffed, downstream team that acts as a blocker, creating friction. Developers care about security but often lack the time and clear guidance to implement it effectively.
+- **Applying CAMS to Security (DevSecOps Principles):**
+    - **Culture:** The core tenet is: "If security introduces blocking to the organization, it will be ignored, not embraced." Security must work *with* the value stream, not against it.
+    - **Automation ("Shifting Left"):** Introduce security testing and tools earlier in the development lifecycle (e.g., in the IDE and CI system), not just at the end. This provides fast feedback when issues are cheapest to fix. **Caveat:** This must be done without bloating build times or dumping undue work on developers.
+    - **Sharing:** Use "Security Champions"—deputized volunteers within product teams—to act as a bridge, sharing knowledge and responsibility between the central InfoSec team and developers.
+    - **Measurement:** Use metrics and shared goals to drive security improvements, not FUD (Fear, Uncertainty, and Doubt).
+
+## Cloud native and Kubernetes
+
+- **Kubernetes:** An open-source container orchestration system for automating software deployment, scaling, and management.
+- **Benefits:**
+    1.  **Automation Platform:** It automates much of the "plumbing" required to run applications (deployment, scaling, service discovery, health monitoring).
+    2.  **Infrastructure Abstraction:** It provides a consistent service layer that allows applications to run across on-premise data centers and different cloud providers.
+- **Cloud Native:** A term that, in modern practice, largely refers to tools and technologies designed to work with Kubernetes. The Cloud Native Computing Foundation (CNCF) maintains a vast landscape of these tools.
+- **Challenges and Considerations:**
+    1.  **Complexity:** Kubernetes is highly configurable, leading to a steep learning curve and complex systems built from many stitched-together tools.
+    2.  **Cost and Overhead:** It is a large, heavy, and expensive system that often requires a dedicated team to administer. It can be overkill for simpler applications.
+    3.  **Risk of New Silos:** Without a DevOps mindset, a Kubernetes platform can easily become a new silo that hinders collaboration and value flow.
+
+## DevOps and chaos engineering
+
+- **Definition:** Chaos engineering is the discipline of experimenting on a system by deliberately introducing failures (e.g., shutting down a server, introducing network latency) in order to build confidence in the system's ability to withstand turbulent, real-world conditions.
+- **Origin:** Popularized by Netflix with their "Chaos Monkey" tool, which randomly terminates production servers to force teams to build resilient systems.
+- **Goal:** To move beyond *assuming* a system is resilient to *proving* it through controlled experiments in a production environment.
+- **Practices:**
+    - **Validate Automated Remediation:** Confirm that automated failover and recovery systems work as expected.
+    - **Game Days:** Test the human part of incident response by creating a controlled outage and having teams work through their practiced response procedures.
+- **Connection to DevOps:** It is a direct application of The Three Ways (using feedback loops for learning) and helps create a true learning organization.
+
+## MLOps: Leveraging DevOps to run ML systems
+
+- **Concept:** MLOps is the application of DevOps principles and practices to the unique lifecycle of machine learning (ML) and artificial intelligence (AI) systems.
+- **What Makes MLOps Different:**
+    1.  **People:** The primary users are often data scientists, who are less systems-focused than developers but whose work is highly dependent on specific hardware (e.g., GPUs).
+    2.  **Artifacts:** In addition to code and infrastructure, MLOps must manage and version massive **datasets** and **ML models**.
+    3.  **Workloads:** Training jobs are often intensive, long-running batch processes on expensive High-Performance Computing (HPC) clusters.
+    4.  **Feedback & Results:** ML models produce outputs of varying quality, not a simple pass/fail, creating a more complex feedback loop.
+    5.  **Drift:** You must monitor for drift in model *predictions* and performance, which is more complex than typical application monitoring.
+- **Process:** Involves parallel and interrelated CI/CD pipelines for software, infrastructure, and the data/models.
+
+## AIOps: Using AI in your DevOps work
+
+- **Concept:** AIOps is the practice of using Artificial Intelligence (AI) to assist and augment the work of DevOps professionals, helping to manage complexity and reduce cognitive overload.
+- **Key Caveat:** AI is an *assistant*, not a replacement. The engineer is always responsible for validating and testing AI-generated output.
+- **Use Cases:**
+    - **Code & Script Generation:** Creating API integrations, command-line scripts, and code in unfamiliar languages. **Prompt engineering** is a key skill.
+    - **Explanation & Documentation:** Explaining what complex code does and generating documentation for it.
+    - **Improving Monitoring:** Assisting with alert triage and recommending remediation actions.
+    - **Code Conversion:** Translating code from one platform or language to another (e.g., Terraform to AWS CLI).
+    - **Security:** Assisting with code reviews and finding risky changes.
+- **The Three Waves of AIOps:**
+    1.  **Wave 1 (Code):** AI-assisted coding and testing (e.g., GitHub Copilot). **(Happening Now)**
+    2.  **Wave 2 (Systems):** AI-driven monitoring, alerting, and system explanation. **(In its Infancy)**
+    3.  **Wave 3 (People):** AI-powered self-service platforms and enhanced team collaboration. **(Future)**
+
+## Chapter Quiz
+
+**Question 1 of 12**
+
+Besides developers and operations, what is the other group most necessary to be part of MLOps?
+
+- Networking
+- Sales
+- **Data Scientists (Correct)**
+    - *Feedback: Yep, Data scientists need to be involved with MLOps.*
+- Platform Engineering
+    - *Feedback: Not usually.*
+
+**Question 2 of 12**
+
+By practicing Chaos Engineering, what is the desired outcome?
+
+- Preventing Chaos
+- **Resilience and Reliability (Correct)**
+    - *Feedback: Yep, Chaos Engineering advances resilience and reliability.*
+- Finding the offending developer
+- Root Cause Analysis
+
+**Question 3 of 12**
+
+Shift Left has worked well in every organization and had a positive impact.
+
+- **FALSE (Correct)**
+    - *Feedback: While it sometimes works, it doesn't always.*
+- TRUE
+
+**Question 4 of 12**
+
+What are benefits of AIOps and using AI for DevOps work?
+
+- Code Reviews and Security
+- Language Conversion
+- Refactoring and Documentation
+- **All of these (Correct)**
+    - *Feedback: Yes, all of these*
+
+**Question 5 of 12**
+
+A good example of a paved road approach is a _____.
+
+- ITIL
+- **CI/CD Pipeline (Correct)**
+    - *Feedback: Yes*
+- Shadow IT
+    - *Feedback: This isn't' paved road*
+- Using a Change Advisory Board
+
+**Question 6 of 12**
+
+What is MLOps?
+
+- Management Line Ops is a way for managers to see what is happening on the line,
+- **The extension of DevOps for Machine Learning systems (Correct)**
+    - *Feedback: Yes, it extends devops for ML.*
+- It is the sales opportunity for ML in an organization.
+- Used for calculating cycle time of your system.
+
+**Question 7 of 12**
+
+When you hear people talking about Cloud Native, that usually suggests they are talking about _____.
+
+- Rust programming language components
+- Amazon
+- **Kubernetes (Correct)**
+    - *Feedback: Yes!*
+- Large Language Models
+
+**Question 8 of 12**
+
+What is prompt engineering?
+
+- Using AI in your linux command line prompt.
+- **The process of structuring a text query that can be interpreted and understood by a generative AI model. (Correct)**
+    - *Feedback: Correct! It's how we tune the AI to the task at hand.*
+- Asking AI tools to remind you of tasks.
+- Using AI to change how ask questions of your team and coworkers.
+
+**Question 9 of 12**
+
+A pattern people use to find security friendly developers to advance security in a team or devops context is called: _____.
+
+- **Security Champions (Correct)**
+    - *Feedback: Yes!*
+- Security Ninjas
+- Security Pros
+- Security Wizards
+
+**Question 10 of 12**
+
+What is fault injection?
+
+- being able to find the fault in the system before developers commit the code
+- adding a webhook to your system that checks for faults
+- **intentionally applying an outage or performance degradation to a live system component (Correct)**
+    - *Feedback: Yes, just like Chaos Monkey!*
+- a part of observability tools
+
+**Question 11 of 12**
+
+What is Kubernetes?
+
+- **open-source container orchestration system for automating software deployment, scaling, and management (Correct)**
+    - *Feedback: Yep!*
+- a simple tool that works with a small number of containers
+- A tool built and popularized by Microsoft that orchestrates containers and eases the burden of operational maintenance.
+- a cloud provider
+
+**Question 12 of 12**
+
+Once you build a paved road you should require that other teams use it.
+
+- TRUE
+- **FALSE (Correct)**
+    - *Feedback: Try to make it desirable to use, but not forced*
+
+---
