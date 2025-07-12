@@ -1297,3 +1297,49 @@ Once you build a paved road you should require that other teams use it.
     - *Feedback: Try to make it desirable to use, but not forced*
 
 ---
+
+# 8. Your DevOps Career
+
+## DevOps and your career
+
+- DevOps is a mindset and a suite of practices, not just a specific job title. Understanding it can benefit anyone in a technology organization.
+- **For a Developer:** It provides a better understanding of how to build reliable, observable applications and align work with the overall value stream.
+- **For a System Administrator ("DevOps Engineer"):** It means shifting from a manual, siloed approach to building systems with IaC, focusing on reliability, and implementing observability and automation. You understand that collaboration, automation, measurement, and sharing (CAMS) are what create effectiveness.
+- **Specialized DevOps Roles:**
+    - **Automation/Platform Engineer:** A developer focused on creating automation for system and business outcomes.
+    - **Build/Release Manager:** A specialist in creating and maintaining CI/CD pipelines and managing the business communication around releases.
+    - **Site Reliability Engineer (SRE):** The most common term for those performing runtime support: observing, managing, and fixing live systems.
+- **Benefits Beyond Technical Roles:** Understanding DevOps is valuable for sales, marketing, product managers, and executives to understand the benefits and effectively interact with the ecosystem.
+
+## DevOps learning resources
+
+- A lightning round of key resources to continue your DevOps learning journey. (A full list is available in the course handout).
+- **Top 10 DevOps Book List:**
+    - **All-Around Reads:** *The DevOps Handbook*, *Accelerate*, *The Phoenix Project*.
+    - **Core Practices:** *Continuous Delivery*, *Site Reliability Engineering Book*, *Infrastructure as Code*.
+    - **Key Perspectives:** *Release It!* (developer view), *The Practice of Cloud System Administration* (operations view).
+    - **Process Foundations:** *The Visible Ops Handbook*, *Lean Software Development*.
+- **Online Sources:**
+    - **Newsletters:** Many weekly newsletters summarize recent developments.
+    - **Websites:** Martin Fowler (expert articles on Agile/DevOps), Julia Evans (zines/comics explaining technical topics).
+- **Certifications:**
+    - Many are technology-specific (AWS, HashiCorp, Kubernetes).
+    - The DevOps Institute offers broader DevOps certifications.
+    - University boot camps (e.g., Caltech) are available.
+- **Conferences and User Groups:** A highly effective way to learn by meeting other practitioners.
+    - **DevOps Enterprise Summit:** A polished event focused on large organizations.
+    - **DevOpsDays:** A global series of low-cost, community-organized local events. This is where DevOps started.
+    - **All Day DevOps:** A free, 24-hour online conference.
+
+## Your personal DevOps journey
+
+- Experience is the best teacher. Continuous learning combines hands-on practice with frequent feedback.
+- **Create a Learning Path:** Your next steps depend on your target role and current skills. You'll need different levels of depth in various technologies.
+- **Foundational Technical Skills:** Operating systems, programming languages, cloud, and containerization.
+- **The DevOps Foundations Curriculum:** This course is part of a larger series of courses in the LinkedIn Learning library covering each of the major practice areas in more detail.
+    - **Core Practices:** Lean and Agile, Visible Ops Change Control, Infrastructure as Code, CI/CD, Site Reliability Engineering.
+    - **Security:** Automated Security Testing, Building a DevSecOps Pipeline.
+    - **Advanced Drill-Downs:** Observability, Incident Management, Incident Response.
+    - **For Leaders:** A specific course on DevOps Management.
+    - **Troubleshooting:** A course on DevOps Anti-Patterns and how to combat them.
+- The journey continues. Stay curious, keep learning, and connect with the community.
